@@ -12,7 +12,7 @@ namespace CarmaHomework
         public static readonly string ConnectionString = "Server=.\\SQLEXPRESS;Database=CarmaDb;Trusted_Connection=True";
 
         /// <summary>
-        /// Create a customer in the database.
+        /// Create a new customer in the database.
         /// </summary>
         /// <param name="firstName">First name of the customer.</param>
         /// <param name="lastName">Last name of the customer.</param>
@@ -51,14 +51,14 @@ namespace CarmaHomework
         /// <summary>
         /// Retrieve all current customers in the database.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of customers.</returns>
         public static IList<Customer> RetrieveCustomers()
         {
             var customers = new List<Customer>();
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                using (SqlCommand command = new SqlCommand("SELECT * FROM Customer"))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM [Customer]"))
                 {
                     command.Connection = connection;
                     try
@@ -122,9 +122,51 @@ namespace CarmaHomework
             }
         }
 
+        /// <summary>
+        /// Create a new order in the database.
+        /// </summary>
+        /// <param name="price">The price of the order.</param>
+        /// <param name="customer">The corresponding customer.</param>
         public static void CreateOrder(decimal price, Customer customer)
         {
             CreateOrder(price, customer.CustomerId);
+        }
+
+        /// <summary>
+        /// Retrieve all the orders in the database.
+        /// </summary>
+        /// <returns>List of orders.</returns>
+        public static IList<Order> RetrieveOrders()
+        {
+            var orders = new List<Order>();
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("SELECT * FROM [Order]"))
+                {
+                    command.Connection = connection;
+                    try
+                    {
+                        connection.Open();
+                        var reader = command.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            orders.Add(new Order 
+                            {
+                                OrderId = reader.GetInt32(0),
+                                Price = reader.GetDecimal(1),
+                                CustomerId = reader.GetInt32(2),
+                            });
+                        }
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            return orders;
         }
     }
 }

@@ -18,6 +18,11 @@ namespace CarmaHomework
             {
                 Console.WriteLine(c.CustomerId + " " + c.FirstName + " " + c.LastName);
             }
+            var orders = DatabaseHelper.RetrieveOrders();
+            foreach (var o in orders)
+            {
+                Console.WriteLine(o.OrderId + " " + o.Price + " " + o.CustomerId);
+            }
             Console.ReadLine();
         }
     }
