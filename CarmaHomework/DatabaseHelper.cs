@@ -30,20 +30,12 @@ namespace CarmaHomework
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                using (SqlCommand command = new SqlCommand("INSERT INTO [Customer] VALUES(@FirstName, @LastName)"))
+                using (SqlCommand command = new SqlCommand("INSERT INTO [Customer] VALUES(@FirstName, @LastName)", connection))
                 {
-                    command.Connection = connection;
                     command.Parameters.AddWithValue("FirstName", firstName);
                     command.Parameters.AddWithValue("LastName", lastName);
-                    try
-                    {
-                        connection.Open();
-                        command.ExecuteNonQuery();
-                    }
-                    finally
-                    {
-                        connection.Close();
-                    }
+                    connection.Open();
+                    command.ExecuteNonQuery();
                 }
             }
         }
@@ -58,26 +50,18 @@ namespace CarmaHomework
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                using (SqlCommand command = new SqlCommand("SELECT * FROM [Customer]"))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM [Customer]", connection))
                 {
-                    command.Connection = connection;
-                    try
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
                     {
-                        connection.Open();
-                        var reader = command.ExecuteReader();
-                        while (reader.Read())
+                        customers.Add(new Customer
                         {
-                            customers.Add(new Customer
-                            {
-                                CustomerId = reader.GetInt32(0),
-                                FirstName = reader.GetString(1),
-                                LastName = reader.GetString(2),
-                            });
-                        }
-                    }
-                    finally
-                    {
-                        connection.Close();
+                            CustomerId = reader.GetInt32(0),
+                            FirstName = reader.GetString(1),
+                            LastName = reader.GetString(2),
+                        });
                     }
                 }
             }
@@ -104,20 +88,12 @@ namespace CarmaHomework
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                using (SqlCommand command = new SqlCommand("INSERT INTO [Order] VALUES(@Price, @CustomerId)"))
+                using (SqlCommand command = new SqlCommand("INSERT INTO [Order] VALUES(@Price, @CustomerId)", connection))
                 {
-                    command.Connection = connection;
                     command.Parameters.AddWithValue("Price", price);
                     command.Parameters.AddWithValue("CustomerId", customerId);
-                    try
-                    {
-                        connection.Open();
-                        command.ExecuteNonQuery();
-                    }
-                    finally
-                    {
-                        connection.Close();
-                    }
+                    connection.Open();
+                    command.ExecuteNonQuery();
                 }
             }
         }
@@ -142,26 +118,18 @@ namespace CarmaHomework
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                using (SqlCommand command = new SqlCommand("SELECT * FROM [Order]"))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM [Order]", connection))
                 {
-                    command.Connection = connection;
-                    try
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
                     {
-                        connection.Open();
-                        var reader = command.ExecuteReader();
-                        while (reader.Read())
+                        orders.Add(new Order
                         {
-                            orders.Add(new Order 
-                            {
-                                OrderId = reader.GetInt32(0),
-                                Price = reader.GetDecimal(1),
-                                CustomerId = reader.GetInt32(2),
-                            });
-                        }
-                    }
-                    finally
-                    {
-                        connection.Close();
+                            OrderId = reader.GetInt32(0),
+                            Price = reader.GetDecimal(1),
+                            CustomerId = reader.GetInt32(2),
+                        });
                     }
                 }
             }

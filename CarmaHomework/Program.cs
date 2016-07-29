@@ -11,8 +11,8 @@ namespace CarmaHomework
         static void Main(string[] args)
         {
             //DatabaseHelper.CreateCustomer("123456789012345678901234567890123456789012345678901234567890", "foo02");
-            //DatabaseHelper.CreateCustomer("foo03", "foo03");
-            //DatabaseHelper.CreateOrder(1, 2);
+            DatabaseHelper.CreateCustomer("foo04", "foo04");
+            DatabaseHelper.CreateOrder(5, 5);
             var customers = DatabaseHelper.RetrieveCustomers();
             foreach (var c in customers)
             {
