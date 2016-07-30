@@ -49,7 +49,7 @@
   <ItemGroup>
     <Compile Include="BusinessObjects\Customer.cs" />
     <Compile Include="BusinessObjects\Order.cs" />
-    <Compile Include="CustomerWithOrders.cs" />
+    <Compile Include="BusinessObjects\CustomerWithOrders.cs" />
     <Compile Include="DatabaseHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
