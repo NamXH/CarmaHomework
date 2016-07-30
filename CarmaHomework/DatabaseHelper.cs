@@ -74,7 +74,7 @@ namespace CarmaHomework
         /// <param name="customerId">The corresponding customer's Id.</param>
         public static void CreateOrder(decimal price, int customerId)
         {
-            // Can check for max value of price if need to. The SQL command will just throw an overflow otherwise.
+            // Can check for max value of price if need to. The SQL command will just throw an arithmetic overflow otherwise.
             if (price < 0)
             {
                 throw new ArgumentException("Price must be non-negative.");
