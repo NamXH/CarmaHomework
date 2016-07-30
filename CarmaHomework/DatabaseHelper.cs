@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarmaHomework
 {
@@ -30,7 +28,7 @@ namespace CarmaHomework
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                using (SqlCommand command = new SqlCommand("INSERT INTO [Customer] VALUES(@FirstName, @LastName)", connection))
+                using (SqlCommand command = new SqlCommand("INSERT INTO [Customer] VALUES(@FirstName, @LastName)", connection)) // Use parameters to avoid SQL injection
                 {
                     command.Parameters.AddWithValue("FirstName", firstName);
                     command.Parameters.AddWithValue("LastName", lastName);
@@ -135,6 +133,29 @@ namespace CarmaHomework
             }
 
             return orders;
+        }
+
+        public static IList<CustomerWithOrders> RetrieveCustomersWithOrders()
+        {
+            var customersWithOrders = new List<CustomerWithOrders>();
+
+            var customers = RetrieveCustomers();
+            var orders = RetrieveOrders();
+
+            var customersLeftJoinOrders = from customer in customers
+                                          join order in orders on customer.CustomerId equals order.CustomerId into gj
+                                          from subOrder in gj.DefaultIfEmpty()
+                                          select new { Customer = customer, Order = (subOrder == null ? null : subOrder) };
+
+            customersWithOrders = customersLeftJoinOrders.GroupBy(leftJoin => leftJoin.Customer.CustomerId)
+               .Select(groupedLeftJoin => new CustomerWithOrders
+               {
+                   Customer = groupedLeftJoin.First().Customer,
+                   Orders = groupedLeftJoin.Where(x => x.Order != null).Select(x => x.Order).ToList(),
+                   TotalOrderPrice = groupedLeftJoin.Where(x => x.Order != null).Sum(x => x.Order.Price)
+               }).ToList();
+
+            return customersWithOrders;
         }
     }
 }
