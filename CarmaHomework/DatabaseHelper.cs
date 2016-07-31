@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 
@@ -7,7 +8,21 @@ namespace CarmaHomework
 {
     public static class DatabaseHelper
     {
-        public static readonly string ConnectionString = "Server=.\\SQLEXPRESS;Database=CarmaDb;Trusted_Connection=True";
+        public static string ConnectionString { get; private set; }
+
+        static DatabaseHelper()
+        {
+            var settings = ConfigurationManager.ConnectionStrings["CarmaDb"];
+            if (settings != null)
+            {
+                ConnectionString = settings.ConnectionString;
+            }
+            else
+            {
+                ConnectionString = null;
+            }
+        }
+
 
         /// <summary>
         /// Create a new customer in the database.
