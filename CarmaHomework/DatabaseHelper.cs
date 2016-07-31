@@ -21,7 +21,6 @@ namespace CarmaHomework
             {
                 ConnectionString = null;
             }
-            ConnectionString = null;
         }
 
 
