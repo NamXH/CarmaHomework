@@ -24,21 +24,6 @@ namespace CarmaTest
             return customers;
         }
 
-        public static IList<Order> GenerateOrders(int numberOfOrders, int customerId, decimal price)
-        {
-            var orders = new List<Order>();
-            for (var i = 1; i <= numberOfOrders; i++)
-            {
-                orders.Add(new Order 
-                {
-                    OrderId = i,
-                    CustomerId = customerId,
-                    Price = price,
-                });
-            }
-            return orders;
-        }
-
         public static IList<Order> GenerateOrders(int numberOfCustomers, int ordersPerCustomer, decimal priceSeed, decimal priceIncrement)
         {
             var orders = new List<Order>();

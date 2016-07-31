@@ -5,6 +5,12 @@ using System.Collections.Generic;
 
 namespace CarmaTest
 {
+    /// Because of time limitation, I only implement some basic test cases for the most important function in this homework.
+    /// Other tests should be done namely load test, integration test.
+    /// Note: to test SQL queries against the database, I think we can use LocalDB as a mock test server.
+    /// I have very little experience with Microsoft's databases so this idea needs to be verified.
+    /// I just think utilizing LocalDB seems to be quite an interesting method :)
+     
     [TestClass]
     public class DatabaseHelperTest
     {
@@ -20,6 +26,16 @@ namespace CarmaTest
         {
             var customersWithOrders = DatabaseHelper.LinkCustomersWithOrders(new List<Customer> { }, new List<Order> { });
             Assert.AreEqual(0, customersWithOrders.Count, "Actual CustomersWithOrders's count is not 0.");
+        }
+
+        [TestMethod]
+        public void LinkCustomerWithOrders_EmptyOrders()
+        {
+            var customers = DatabaseTestingUtility.GenerateCustomers(5);
+            var orders = new List<Order> { };
+            var customersWithOrders = DatabaseHelper.LinkCustomersWithOrders(customers, orders);
+
+            Assert.AreEqual(0, customersWithOrders[0].Orders.Count, String.Format("Expected orders per customer: {0}. Actual: {1}", 0, customersWithOrders[0].Orders.Count));
         }
 
         [TestMethod]

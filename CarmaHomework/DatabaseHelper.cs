@@ -21,6 +21,7 @@ namespace CarmaHomework
             {
                 ConnectionString = null;
             }
+            ConnectionString = null;
         }
 
 
@@ -36,7 +37,7 @@ namespace CarmaHomework
                 throw new ArgumentException("First name or last name is null or empty.");
             }
 
-            if ((firstName.Length > 50) || (lastName.Length > 50)) // We can change this constraint later
+            if ((firstName.Length > 50) || (lastName.Length > 50)) // We can change this constraint later according to types in DB's tables
             {
                 throw new ArgumentException("The length of first name and last name must be less than or equal to 50");
             }
